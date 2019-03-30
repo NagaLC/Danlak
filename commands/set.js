@@ -41,8 +41,6 @@ module.exports = {
             }).catch(console.error);
         }
 
-        console.log(fileExtension);
-
         if (fileExtension != extension) {
             let res = `L'extension n'est pas du ${extension}.`;
             message.channel.send(res);
@@ -68,7 +66,7 @@ module.exports = {
         };
         fs.writeFile('./ics.json', JSON.stringify(jsonFile, null, 4), err => {
             if(err) throw err;
-            message.channel.send("Fichier sauvegarder !");
+            message.channel.send("Fichier sauvegardé !");
         });
 
         return getPromise(next, "All is fine").then( value => {
