@@ -89,6 +89,8 @@ module.exports = class Cours {
 		dhRes.heure = dDate.getHours();
 		dhRes.minute = dDate.getMinutes();
 		dhRes.seconde = dDate.getSeconds();
+		if (dDate.getDay() == 0) dhRes.order = 7;
+		else dhRes.order = dDate.getDay();
 		return dhRes;
 	}
 

@@ -18,18 +18,7 @@ module.exports = {
         }
 
         control.chargerData(index.content);
-
-        let today = new Date();
-        let month = today.getMonth()+1; // 0 à 11 or je veux 1 à 12
-        let year = today.getFullYear();
-        if (args[1] !== undefined) {
-            month = args[1];
-        }
-        if (args[2] !== undefined) {
-            year = args[2];
-        }
-        let date = libDate.giveMe(year, month, args[0]);
-        let result = control.listeCoursParDate(date);
+        let result = control.listeCoursParSemaine();
         let parse = "";
         result.forEach( (cours, key) => {
             parse += "\n" + cours.nom;
@@ -37,7 +26,7 @@ module.exports = {
         if (parse !== "") {
             message.channel.send(parse);
         } else {
-            message.channel.send("Pas de cours pour la date donnée");          
+            message.channel.send("Pas de cours pour la semaine en cours");          
         }
         return true;
 

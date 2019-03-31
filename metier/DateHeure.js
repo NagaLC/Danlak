@@ -1,5 +1,5 @@
 module.exports = class DateHeure {
-	constructor(j, m, a, h, min, sec) {
+	constructor(j, m, a, h, min, sec, order) {
 		if (j === undefined) this.jour = 0;
 		else this.jour = j;
 		if (m === undefined) this.mois = 0;
@@ -12,6 +12,8 @@ module.exports = class DateHeure {
 		else this.minute = min;
 		if (sec === undefined) this.seconde = 0;
 		else this.seconde = sec;
+		if (order === undefined) this.order = 0;
+		this.order = 0; // Mon. = 1 Sun. = 7
 	}
 
 	set jour(j) {
@@ -55,7 +57,7 @@ module.exports = class DateHeure {
 	get seconde() {
 		return this._seconde;
 	}
-
+	
 	equals(dhDate, level) {
 		// level 1 compare 01/01/2000
 		// level 2 compare 01/01/2000 12h
