@@ -6,7 +6,7 @@ const libDate = require('./../lib/LibDate');
 module.exports = class ControllerCours {
 
 	constructor() {
-		this.ensembleCours = []
+		this.ensembleCours = [];
 	}
 
 	chargerData(data) {
@@ -40,10 +40,38 @@ module.exports = class ControllerCours {
 		return this.ensembleCours;
 	}
 
+	trieFusionSelonDateHeure(t1, t2) {
+		let i = 0, j = 0, k = 0;  
+		let n = t1.length, m = t2.length;  
+		let t = new Array(n+m);  
+
+		while (i < n && j < m) {  
+		if (t1[i].dhDebut.inferieur(t2[j].dhDebut)) {  
+		  t[k] = t1[i];  
+		  i++;  
+		} else {  
+		  t[k] = t2[j];  
+		  j++;  
+		}  
+		k++;  
+		}  
+		while (i < n) {  
+		t[k] = t1[i];  
+		i++;  
+		k++;  
+		}  
+		while (j < m) {  
+		t[k] = t2[j];  
+		j++;  
+		k++;  
+		}  
+		return t;
+	}
+
 	trieFusionSelonJourDeLaSemaine(t1, t2) {  
-	  var i = 0, j = 0, k = 0;  
-	  var n = t1.length, m = t2.length;  
-	  var t = new Array(n+m);  
+	  let i = 0, j = 0, k = 0;  
+	  let n = t1.length, m = t2.length;  
+	  let t = new Array(n+m);  
 	  
 	  while (i < n && j < m) {  
 	    if (t1[i].dhDebut.order < t2[j].dhDebut.order) {  
@@ -69,20 +97,34 @@ module.exports = class ControllerCours {
 	} 
 
 	trierParSemaine(t) {  
-	  var n = t.length;  
-	  var t1, t2;  
-	  
-	  if (n == 0 || n == 1) {  
-	    return t;  
-	  } else {  
-	    t1 = this.trierParSemaine(t.slice(0,n/2));  
-	    t2 = this.trierParSemaine(t.slice(n/2));  
-	    return this.trieFusionSelonJourDeLaSemaine (t1,t2);  
-	  }  
-	}  
+		let taille = t.length;  
+		let t1, t2;  
+
+		if (taille == 0 || taille == 1) {  
+			return t;  
+		} 
+		else {  
+			t1 = this.trierParSemaine(t.slice(0,taille/2));  
+			t2 = this.trierParSemaine(t.slice(taille/2));  
+			return this.trieFusionSelonJourDeLaSemaine (t1,t2);  
+		}  
+	} 
+
+	trierParDateHeure(t) {
+		let taille = t.length;  
+		let t1, t2;  
+
+		if (taille == 0 || taille == 1) {  
+			return t;  
+		} 
+		else {  
+			t1 = this.trierParDateHeure(t.slice(0,taille/2));  
+			t2 = this.trierParDateHeure(t.slice(taille/2));  
+			return this.trieFusionSelonDateHeure (t1,t2);  
+		}  
+	}
 
 	listeCoursParDate(dDate) {
-		console.log(this.afficher());
 		if (dDate === undefined) {
 			dDate=libDate.today();
 		}
@@ -94,7 +136,7 @@ module.exports = class ControllerCours {
 				index++;
 			}
 		});
-		return res;
+		return this.trierParDateHeure(res);
 	}
 
 	listeCoursParSemaine(week) {
@@ -104,13 +146,13 @@ module.exports = class ControllerCours {
 		let res = [];
 		let index = 0;
 		this.ensembleCours.forEach( (cours, key) => {
-			for (var i = 0; i < week.length; i++) {
+			for (let i = 0; i < week.length; i++) {
 				if (cours.estDateDuCours(week[i])) {
 					res[index] = cours;
 					index++;
 				}
 			}			
 		});
-		return this.trierParSemaine(res);
+		return this.trierParDateHeure(res);
 	}
 }

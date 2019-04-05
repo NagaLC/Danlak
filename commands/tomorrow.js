@@ -5,10 +5,10 @@ const libDate = require('./../lib/LibDate');
 const control = new Controller();
 
 module.exports = {
-    name: 'today',
-    description: `Renvoie la liste des cours d'aujourd'hui.`,
+    name: 'tomorrow',
+    description: `Renvoie la liste des cours de demain.`,
     args: false,
-    aliases: ['td', 'ls'],
+    aliases: ['tm'],
     cooldown: 5,
     execute (message, args) {
         let guildId = message.guild.id;
@@ -17,11 +17,11 @@ module.exports = {
             message.channel.send("Je ne trouve pas de données sur votre serveur\nPensez à `!set` votre fichier.ics.");
             return false;
         }
-        control.chargerData(index.content);
-        let today = libDate.today();
-        let result = control.listeCoursParDate(today);
+     	control.chargerData(index.content);
+     	let tomorrow = libDate.tomorrow();
+     	let result = control.listeCoursParDate(tomorrow);
         let bFound = false;
-        result.forEach( (cours, key) => {
+     	result.forEach( (cours, key) => {
             let tempEmbed = new Discord.RichEmbed()
                 .setColor(libDate.dateColor(cours.dhDebut.order))
                 .setTitle(cours.nom)
@@ -32,9 +32,8 @@ module.exports = {
             bFound = true;
         });
         if (!bFound) {
-            message.channel.send("Pas de cours pour la date donnée : "+ today);          
+            message.channel.send("Pas de cours pour la date donnée : "+ tomorrow);          
         }
         return true;
-
     }
 };

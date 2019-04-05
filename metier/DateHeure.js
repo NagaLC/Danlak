@@ -72,4 +72,47 @@ module.exports = class DateHeure {
 				return ( this._jour===dhDate.jour && this._mois===dhDate.mois && this._an===dhDate.an ); 
 		}
 	}
+
+	inferieur(dhDate) {
+		if (this._an < dhDate.an) {
+			return true;
+		} else if (this._an > dhDate.an) {
+			return false;
+		} else {
+
+			if (this._mois < dhDate.mois) {
+				return true;
+			} else if (this._mois > dhDate.mois) {
+				return false;
+			} else {
+
+				if (this._jour < dhDate.jour) {
+					return true;
+				} else if (this._jour > dhDate.jour) {
+					return false;
+				} else {
+					
+					if (this._heure < dhDate.heure) {
+						return true;
+					} else if (this._heure > dhDate.heure) {
+						return false;
+					} else {
+						
+						if (this._minute < dhDate.minute) {
+							return true;
+						} else if (this._minute > dhDate.minute) {
+							return false;
+						} else {
+							// all cases 
+							return true;						
+						}
+
+					}
+
+				}
+
+			}
+		}
+
+	}
 }

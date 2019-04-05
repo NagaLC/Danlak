@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const Controller = require('./../controller/Controller');
 const jsonFile = require('./../ics.json');
 const libDate = require('./../lib/LibDate');
@@ -5,7 +6,8 @@ const control = new Controller();
 
 module.exports = {
     name: 'week',
-    description: 'Set the file.',
+    description: `Renvoie la liste des cours de la semaine.
+    /!\ la commande prend du temps car un parcours total du fichier est fait. `,
     args: false,
     aliases: ['semaine'],
     cooldown: 5,
@@ -16,16 +18,20 @@ module.exports = {
             message.channel.send("Je ne trouve pas de données sur votre serveur\nPensez à `!set` votre fichier.ics.");
             return false;
         }
-
         control.chargerData(index.content);
         let result = control.listeCoursParSemaine();
-        let parse = "";
+        let bFound = false;
         result.forEach( (cours, key) => {
-            parse += "\n" + cours.nom;
+            let tempEmbed = new Discord.RichEmbed()
+                .setColor(libDate.dateColor(cours.dhDebut.order))
+                .setTitle(cours.nom)
+                .setDescription(cours.salle)
+                .addField(cours.afficherDate(), cours.afficherHeureMinute(), true)
+                .setFooter(cours.professeur.nom+" "+cours.professeur.prenom);
+            message.channel.send(tempEmbed);
+            bFound = true;
         });
-        if (parse !== "") {
-            message.channel.send(parse);
-        } else {
+        if (!bFound) {
             message.channel.send("Pas de cours pour la semaine en cours");          
         }
         return true;

@@ -98,4 +98,18 @@ module.exports = class Cours {
 		let dhDate = this.convertirDateHeure(dDate);
 		return dhDate.equals(this.dhDebut);
 	}
+
+	afficherDate() {
+	    let jours = ["404","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+	    let j = this.dhDebut.jour;
+	    let m = this.dhDebut.mois;
+	    let a = this.dhDebut.an;
+	    return jours[this.dhDebut.order] +", "+j+"/"+m+"/"+a;
+	}
+
+	afficherHeureMinute() {
+	    let deb = this.dhDebut.heure+":"+this.dhDebut.minute;
+	    let fin = this.dhFin.heure+":"+this.dhFin.minute;
+	    return deb + " - " + fin;
+	}
 };

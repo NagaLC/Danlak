@@ -2,7 +2,7 @@ const prefix = "!";
 
 module.exports = {
     name: 'help',
-    description: 'List all of my commands or info about a specific command.',
+    description: 'Liste les commandes disponibles',
     aliases: ['commands'],
     usage: '[command name]',
     cooldown: 5,
