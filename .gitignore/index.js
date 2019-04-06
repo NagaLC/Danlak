@@ -1,4 +1,4 @@
-const { prefix, token } = require('./config.json');
+const prefix = "!";
 const fs = require('fs');
 const Discord = require('discord.js');
 const Controller = require('./controller/Controller');
@@ -66,4 +66,4 @@ client.on('message', (message) => {
 		message.reply('there was an error trying to execute that command!');
 	}
 });
-client.login(token);
+client.login(process.env.BOT_TOKEN);
