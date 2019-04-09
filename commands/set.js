@@ -17,7 +17,7 @@ module.exports = {
     name: 'set',
     description: `Permet d'enregistrer l'emploi du temps au format .ics`,
     args: false,
-    usage: 'Après le !set vous avez 15sec pour transferer le fichier au format .ics',
+    usage: 'Après le !set vous avez 10 secondes pour transferer le fichier au format .ics',
     cooldown: 5,
     async execute (message, args) {
         let guildId = message.guild.id;
@@ -28,7 +28,7 @@ module.exports = {
     	await message.channel.send("En attente du fichier .ics");
     	const collection_msg = await message.channel.awaitMessages( msg => {
     		return msg.attachments;
-    	}, {time: 15000}); // Timer d'attente en millisecondes
+    	}, {time: 10000}); // Timer d'attente en millisecondes
     	let url = collection_msg.map( msg => msg.attachments.first().url).join(', ');
         let fileName = collection_msg.map( msg => msg.attachments.first().filename).join(', ');
 		let fileExtension = "." + fileName.split(".")[1];

@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
 const Controller = require('./../controller/Controller');
 const jsonFile = require('./../ics.json');
 const libDate = require('./../lib/LibDate');
+const didi = require('./../lib/LibDiscord');
 const control = new Controller();
 
 module.exports = {
@@ -22,12 +22,7 @@ module.exports = {
      	let result = control.listeCoursParDate(tomorrow);
         let bFound = false;
      	result.forEach( (cours, key) => {
-            let tempEmbed = new Discord.RichEmbed()
-                .setColor(libDate.dateColor(cours.dhDebut.order))
-                .setTitle(cours.nom)
-                .setDescription(cours.salle)
-                .addField(cours.afficherDate(), cours.afficherHeureMinute(), true)
-                .setFooter(cours.professeur.nom+" "+cours.professeur.prenom);
+            let tempEmbed = didi.getEmbed(cours);
             message.channel.send(tempEmbed);
             bFound = true;
         });
