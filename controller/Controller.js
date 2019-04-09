@@ -10,6 +10,7 @@ module.exports = class ControllerCours {
 	}
 
 	chargerData(data) {
+		this.ensembleCours = [];
 		for(let i in data) {
 			let tempCours = new Cours();
 			let tempProf = new Professeur();
