@@ -156,4 +156,29 @@ module.exports = class ControllerCours {
 		});
 		return this.trierParDateHeure(res);
 	}
-}
+
+	premierCours(date, n, limit) {
+		if (date === undefined) {
+			date = libDate.today();
+		}
+		if (limit === undefined) {
+			limit = 7;
+		}
+		if (n == limit) return undefined;
+		let array = this.listeCoursParDate(date);
+		if (array.length <= 0) return this.premierCours(libDate.tomorrow(date),n+1);
+		return array[0];
+	}
+
+	prochainCours(date) {
+		if (date === undefined) {
+			date = libDate.today();
+		}
+		this.ensembleCours.forEach( (cours, key) => {
+			if(cours.estHeureDuCours(date)) {
+				return cours;
+			}				
+		});
+		return this.premierCours(libDate.tomorrow(date), 1);
+	}
+};

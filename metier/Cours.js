@@ -99,6 +99,11 @@ module.exports = class Cours {
 		return dhDate.equals(this.dhDebut);
 	}
 
+	estHeureDuCours(dDate) {
+		let dhDate = this.convertirDateHeure(dDate);
+		return dhDate.equals(this.dhDebut,2);
+	}
+
 	afficherDate() {
 	    let jours = ["404","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 	    let j = this.dhDebut.jour;
