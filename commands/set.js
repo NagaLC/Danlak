@@ -17,7 +17,7 @@ module.exports = {
     name: 'set',
     description: `Permet d'enregistrer l'emploi du temps au format .ics`,
     args: false,
-    usage: 'Après le !set vous avez 10 secondes pour transferer le fichier au format .ics',
+    usage: ' => Après le \'!set\' vous avez 10 secondes pour transferer le fichier au format .ics (glisser - déposer).',
     cooldown: 5,
     async execute (message, args) {
         let guildId = message.guild.id;

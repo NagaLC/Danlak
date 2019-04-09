@@ -6,7 +6,7 @@ const control = new Controller();
 
 module.exports = {
     name: 'tomorrow',
-    description: `Renvoie la liste des cours de demain.`,
+    description: `Affiche la liste des cours qui auront lieu demain.`,
     args: false,
     aliases: ['tm'],
     cooldown: 5,

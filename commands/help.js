@@ -1,4 +1,7 @@
-const prefix = "!";
+const { prefix } = require('./../config.json');
+
+const bloc = String.fromCharCode(96);
+const encapsulation = bloc + bloc + bloc;
 
 module.exports = {
     name: 'help',
@@ -9,39 +12,37 @@ module.exports = {
     execute(message, args) {
         const data = [];
         const { commands } = message.client;
-
+        let str = "";
         if (!args.length) {
-            data.push('Here\'s a list of all my commands:');
-            data.push(commands.map(command => command.name).join(', '));
-            data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
-
+            data.push(encapsulation);
+            data.push("Voici la liste des commandes disposibles :");
+            data.push(" - " + commands.map(command => command.name).join('\n - '));
+            data.push(`\nPour plus de détails sur une commande => ${prefix}help [commande]`);
+            data.push(encapsulation);
             return message.author.send(data, { split: true })
                 .then(() => {
                     if (message.channel.type === 'dm') return;
-                    message.reply('I\'ve sent you a DM with all my commands!');
+                    message.reply("Je t'ai envoyé un message privé avec mes commandes !");
                 })
                 .catch(error => {
                     console.error(`Could not send help DM to ${message.author.tag}.\n`, error);
-                    message.reply('it seems like I can\'t DM you! Do you have DMs disabled?');
+                    message.reply("Ah ?! Je ne parviens pas à t'envoyer un messag privé. Peut être ils sont désactivé ?");
                 });
+            
         }
 
         const name = args[0].toLowerCase();
         const command = commands.get(name) || commands.find(c => c.aliases && c.aliases.includes(name));
 
         if (!command) {
-            return message.reply('that\'s not a valid command!');
+            return message.reply('Commande incorrecte !');
         }
-
-        data.push(`**Name:** ${command.name}`);
-
+        data.push(`**Nom :** ${command.name}`);
         if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
         if (command.description) data.push(`**Description:** ${command.description}`);
         if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
-
-        data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
-
-        message.channel.send(data, { split: true });
+        data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`); 
+        message.channel.send(data,{ split: true });
 
     },
 };

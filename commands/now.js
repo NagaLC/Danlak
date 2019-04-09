@@ -5,8 +5,8 @@ const control = new Controller();
 
 module.exports = {
     name: 'now',
-    description: `Retourne le cours qui à lieu maintenant. Si aucun cours n'a lieu actuellement,
-    retourne le prochain cours qui aura lieu.`,
+    description: `Affiche le cours qui a lieu maintenant. Si aucun cours n'a lieu actuellement,
+    affiche le prochain cours qui aura lieu.`,
     args: false,
     aliases: ['maintenant'],
     cooldown: 5,

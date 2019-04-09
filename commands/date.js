@@ -6,10 +6,10 @@ const control = new Controller();
 
 module.exports = {
     name: 'date',
-    description: `Renvoie les cours de la date passée en paramètre dans l'ordre chronologique.
+    description: `Affiche les cours de la date passée en paramètre dans l'ordre chronologique.
     Si aucun mois et aucune année ne sont passés en paramètres, la commande prendra le jour du mois en cours.`,
     args: true,
-    aliases: ['giveMe', 'gm'],
+    aliases: ['d'],
     usage: '<jour> <mois>? <année>? ex : 4 4 1998',
     cooldown: 5,
     execute (message, args) {

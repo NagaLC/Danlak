@@ -179,6 +179,6 @@ module.exports = class ControllerCours {
 				return cours;
 			}				
 		});
-		return this.premierCours(libDate.tomorrow(date), 1);
+		return this.premierCours(date, 1);
 	}
 };

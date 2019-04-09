@@ -107,7 +107,9 @@ module.exports = class Cours {
 	afficherDate() {
 	    let jours = ["404","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 	    let j = this.dhDebut.jour;
+	    if (j < 10) j = "0"+j;
 	    let m = this.dhDebut.mois;
+	    if (m < 10) m = "0"+m;
 	    let a = this.dhDebut.an;
 	    return jours[this.dhDebut.order] +", "+j+"/"+m+"/"+a;
 	}
@@ -116,5 +118,9 @@ module.exports = class Cours {
 	    let deb = this.dhDebut.heure+":"+this.dhDebut.minute;
 	    let fin = this.dhFin.heure+":"+this.dhFin.minute;
 	    return deb + " - " + fin;
+	}
+
+	afficherProfesseur() {
+		return this.professeur.nom+" "+this.professeur.prenom;
 	}
 };

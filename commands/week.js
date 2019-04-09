@@ -6,10 +6,9 @@ const control = new Controller();
 
 module.exports = {
     name: 'week',
-    description: `Renvoie la liste des cours de la semaine.
-    /!\ la commande prend du temps car un parcours total du fichier est fait. `,
+    description: `Affiche la liste des cours de la semaine.`,
     args: false,
-    aliases: ['semaine'],
+    aliases: ['semaine', 'wk'],
     cooldown: 5,
     execute (message, args) {
         let guildId = message.guild.id;
