@@ -2,7 +2,7 @@ const didi = require('./../lib/LibDiscord');
 
 module.exports = {
     name: 'hello',
-    description: `Salut Danlak !`,
+    description: `Salut Discal !`,
     args: false,
     aliases: ['hi'],
     execute (message, args) {
