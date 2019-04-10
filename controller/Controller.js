@@ -1,7 +1,16 @@
 const Cours = require('./../metier/Cours');
 const DateHeure = require('./../metier/DateHeure');
-const Professeur = require('./../metier/Professeur');
 const libDate = require('./../lib/LibDate');
+
+function filtrerDescription(array, value) {
+	let exclure = "(Export";
+	for( let k = 0; k < array.length; k++){ 
+		if ( array[k] === value || array[k].startsWith(exclure)) {
+			array.splice(k, 1); 
+			k--;
+		}
+	}
+}
 
 module.exports = class ControllerCours {
 
@@ -11,29 +20,23 @@ module.exports = class ControllerCours {
 
 	chargerData(data) {
 		this.ensembleCours = [];
-		for(let i in data) {
-			let tempCours = new Cours();
-			let tempProf = new Professeur();
-			let event = data[i];
+		for(let n in data) {
+			let evenement = new Cours();
+			let event = data[n];
 
 			// Créer le cours avec les informations
-			tempCours.nom = event.summary;
-			tempCours.salle = event.location;
+			evenement.nom = event.summary;
+			evenement.salle = event.location;
 			let description = event.description.split(/\n/);
-			let classe_etudiant = description[2];
-			tempCours.classe = classe_etudiant;
-
-			// Créer le professeur
-			let nom_prenom_professeur = description[3].split(/ +/);
-			tempProf.nom = nom_prenom_professeur[0];
-			tempProf.prenom = nom_prenom_professeur[1];
-			tempCours.professeur = tempProf;
-
+			filtrerDescription(description, '');
+			for (let i = 0; i < description.length; i++) {
+				evenement.description += description[i] + "\n";
+			}
 			// Créer la période			
-			tempCours.dDebut = new Date(event.start);
-			tempCours.dFin = new Date(event.end);
+			evenement.dDebut = new Date(event.start);
+			evenement.dFin = new Date(event.end);
 
-			this.ensembleCours.push(tempCours);
+			this.ensembleCours.push(evenement);
 		}
 	}
 
