@@ -2,9 +2,21 @@ const { prefix, token } = require('./config.json');
 const fs = require('fs');
 const Discord = require('discord.js');
 const Controller = require('./controller/Controller');
+const db_mysql = require('mysql');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.mysql = db_mysql.createConnection({
+	host: "nagaleclown.ovh",
+	user: "bob",
+	password: "eponge",
+	database: "discal_db"
+}); 
+
+client.mysql.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
