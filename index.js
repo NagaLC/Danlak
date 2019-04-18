@@ -6,16 +6,16 @@ const db_mysql = require('mysql');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-client.mysql = db_mysql.createConnection({
+client.connexion = db_mysql.createConnection({
 	host: "nagaleclown.ovh",
 	user: "bob",
 	password: "eponge",
 	database: "discal_db"
 }); 
 
-client.mysql.connect(function(err) {
+client.connexion.connect(function(err) {
   if (err) throw err;
-  console.log("Connected!");
+  console.log("Mysql connected : [OK]");
 });
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -27,8 +27,8 @@ for (const file of commandFiles) {
 const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
-	console.log('Connected !');
-	client.user.setActivity('nudes', { type: 'WATCHING' });
+	console.log('Bot connected : [OK]');
+	client.user.setActivity('nothing', { type: 'WATCHING' });
 });
 
 client.on('message', (message) => {

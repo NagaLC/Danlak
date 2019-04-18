@@ -38,6 +38,7 @@ module.exports = class ControllerCours {
 
 			this.ensembleCours.push(evenement);
 		}
+		this.ensembleCours = this.trierParDateHeure(this.ensembleCours);
 	}
 
 	afficher() {
