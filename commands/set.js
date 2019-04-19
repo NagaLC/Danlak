@@ -16,7 +16,7 @@ module.exports = {
     name: 'set',
     description: `Permet d'enregistrer l'emploi du temps au format .ics`,
     args: false,
-    usage: ' => Après le \'!set\' vous avez 10 secondes pour transferer le fichier au format .ics (glisser - déposer).',
+    usage: 'Parcours les 10 derniers messages du channel et sauvegarde le premier fichier trouvé. Ce fichier doit être au format ics.',
     cooldown: 5,
     execute (message, args) {
         const { connexion } = message.client;
@@ -57,14 +57,14 @@ module.exports = {
                                 ];
                                 connexion.query(sql,[values], function (err, result) {
                                     if (err) throw err;
-                                    console.log("event enregistrer");
+                                    message.channel.send("J'ai bien enregistré votre fichier"+attachment.filename);
                                 });
                             } else {
                                 let sql = "UPDATE event SET content = ? WHERE guildId = ?";
                                 let data = [url,guildId];
                                 connexion.query(sql, data, function (err, result) {
                                     if (err) throw err;
-                                    console.log("event modifier");
+                                    message.channel.send("J'ai bien enregistré votre fichier"+attachment.filename);
                                 });
                             }
                         });
