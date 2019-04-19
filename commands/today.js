@@ -24,8 +24,8 @@ module.exports = {
             console.log(result);
             let url = result[0].url;
             console.log(url);
-            ical.fromURL(url, {}, function(err, content) {
-                if (err) throw err;
+            ical.fromURL(url, {}, function(err2, content) {
+                if (err2) throw err2;
                 control.chargerData(content);
                 let today = libDate.today();
                 let result = control.listeCoursParDate(today);
