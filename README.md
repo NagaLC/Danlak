@@ -6,5 +6,4 @@ Currently it's a discord bot with differents commands allowing users to get back
 ## TO DO :
 - Priorité maximale : effectuer le test en mettant a jour la branche heroku
 - Correction de l'aide sur !set
-- Refactorer les commandes pour rendre du code générique
 - Nouvelle commande qui permettrai de supprimer le fichier en base 

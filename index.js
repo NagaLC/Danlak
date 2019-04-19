@@ -1,4 +1,5 @@
 const { prefix, token } = require('./config.json');
+const { db_host, db_user, db_password, db_database } = require('./config.json');
 const fs = require('fs');
 const Discord = require('discord.js');
 const Controller = require('./controller/Controller');
@@ -7,10 +8,10 @@ const db_mysql = require('mysql');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.connexion = db_mysql.createConnection({
-	host: "nagaleclown.ovh",
-	user: "bob",
-	password: "eponge",
-	database: "discal_db"
+	host: db_host,
+	user: db_user,
+	password: db_password,
+	database: db_database
 }); 
 
 client.connexion.connect(function(err) {

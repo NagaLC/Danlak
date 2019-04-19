@@ -1,6 +1,5 @@
 const Controller = require('./../controller/Controller');
 const ical = require('node-ical');
-const jsonFile = require('./../ics.json');
 const libDate = require('./../lib/LibDate');
 const didi = require('./../lib/LibDiscord');
 const control = new Controller();
