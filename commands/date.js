@@ -24,7 +24,7 @@ module.exports = {
             }
             let url = result[0].url;
             ical.fromURL(url, {}, function(err, content) {
-                if (err) throw err;
+                //if (err) throw err;
                 control.chargerData(content);
                 let today = new Date();
                 let month = today.getMonth()+1; // 0 à 11 or je veux 1 à 12

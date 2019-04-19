@@ -22,7 +22,7 @@ module.exports = {
             }
             let url = result[0].url;
             ical.fromURL(url, {}, function(err, content) {
-                if (err) throw err;
+                //if (err) throw err;
                 control.chargerData(content);
                 let yesterday = libDate.yesterday();
                 let result = control.listeCoursParDate(yesterday);
