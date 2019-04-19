@@ -15,8 +15,6 @@ client.connexion = db_mysql.createConnection({
 
 client.connexion.connect(function(err) {
   if (err) throw err;
-  let channel = client.channels.first();
-  channel.sendMessage("Mysql ok");
   console.log("Mysql connected : [OK]");
 });
 
@@ -30,8 +28,6 @@ const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
 	console.log('Bot connected : [OK]');
-	let channel = client.channels.first();
-  	channel.sendMessage("Bot ok");
 	client.user.setActivity('nudes', { type: 'WATCHING' });
 });
 
