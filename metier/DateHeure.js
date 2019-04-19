@@ -67,7 +67,7 @@ module.exports = class DateHeure {
 
 		switch (level) {
 			case 2:
-				return true;
+				return this.equals(dhDate) && this._heure===dhDate.heure;
 			default:
 				return ( this._jour===dhDate.jour && this._mois===dhDate.mois && this._an===dhDate.an ); 
 		}

@@ -1,14 +1,14 @@
 const Controller = require('./../controller/Controller');
 const ical = require('node-ical');
-const libDate = require('./../lib/LibDate');
 const didi = require('./../lib/LibDiscord');
 const control = new Controller();
 
 module.exports = {
-    name: 'tomorrow',
-    description: `Affiche la liste des cours qui auront lieu demain.`,
+    name: 'now',
+    description: `Affiche le cours qui a lieu maintenant. Si aucun cours n'a lieu actuellement,
+    affiche le prochain cours qui aura lieu.`,
     args: false,
-    aliases: ['tm'],
+    aliases: ['maintenant'],
     cooldown: 5,
     execute (message, args) {
         const { connexion } = message.client;
@@ -24,20 +24,15 @@ module.exports = {
             ical.fromURL(url, {}, function(err, content) {
                 if (err) throw err;
                 control.chargerData(content);
-                let tomorrow = libDate.tomorrow();
-                let result = control.listeCoursParDate(tomorrow);
-                let bFound = false;
-                result.forEach( (cours, key) => {
-                    let tempEmbed = didi.getEmbed(cours);
-                    message.channel.send(tempEmbed);
-                    bFound = true;
-                });
-                if (!bFound) {
-                    message.channel.send("Pas de cours pour la date donnée : "+ tomorrow);          
-                }
+                let cours = control.prochainCours();
+                if (cours===undefined) {
+                    message.channel.send("Je n'arrive pas à trouver le prochain cours qui doit avoir lieu !");
+                    return false;
+                }       
+                let tempEmbed = didi.getEmbed(cours);
+                message.channel.send(tempEmbed);
                 return true;
             });
         });
-        return false;
     }
 };

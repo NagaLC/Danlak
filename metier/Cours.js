@@ -1,15 +1,12 @@
 const DateHeure = require('./DateHeure.js');
-const Professeur = require('./Professeur.js');
 
 module.exports = class Cours {
 
-	constructor(nom, salle, classe, dDebut, dFin, professeur) {
+	constructor(nom, salle, dDebut, dFin, description) {
 		if (nom === undefined) this.nom = "";
 		else this.nom = nom;
 		if (salle === undefined) this.salle = "";
 		else this.salle = salle;
-		if (classe === undefined) this.classe = "";
-		else this.classe = classe;
 		if (dDebut === undefined) this.dhDebut = new DateHeure();
 		else {
 			this.dhDebut = this.convertirDateHeure(dDebut);
@@ -18,8 +15,8 @@ module.exports = class Cours {
 		else {
 			this.dhFin = this.convertirDateHeure(dFin);
 		}
-		if (professeur === undefined) this.professeur = new Professeur();
-		else this.professeur = professeur;
+		if (description === undefined) this.description = "";
+		else this.description = description;
 		this.calculerNombreHeure();
 	}
 
@@ -36,14 +33,7 @@ module.exports = class Cours {
 	get salle() {
 		return this._salle;
 	}
-
-	set classe(classe) {
-		this._classe = classe;
-	}
-	get classe() {
-		return this._classe;
-	}
-
+	
 	set dDebut(dDebut) {
 		this._dDebut = dDebut;
 		this.dhDebut = this.convertirDateHeure(dDebut);
@@ -64,12 +54,11 @@ module.exports = class Cours {
 		return this._dFin;
 	}
 
-	set professeur(professeur) {
-		this._professeur = professeur;
+	set description(description) {
+		this._description = description;
 	}
-	get professeur() {
-		let res = new Professeur(this._professeur.nom, this._professeur.prenom);
-		return res;
+	get description() {
+		return this._description;
 	}
 
 	calculerNombreHeure() {
@@ -99,10 +88,17 @@ module.exports = class Cours {
 		return dhDate.equals(this.dhDebut);
 	}
 
+	estHeureDuCours(dDate) {
+		let dhDate = this.convertirDateHeure(dDate);
+		return dhDate.equals(this.dhDebut,2);
+	}
+
 	afficherDate() {
 	    let jours = ["404","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
 	    let j = this.dhDebut.jour;
+	    if (j < 10) j = "0"+j;
 	    let m = this.dhDebut.mois;
+	    if (m < 10) m = "0"+m;
 	    let a = this.dhDebut.an;
 	    return jours[this.dhDebut.order] +", "+j+"/"+m+"/"+a;
 	}

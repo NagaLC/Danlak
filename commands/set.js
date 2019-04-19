@@ -1,4 +1,3 @@
-const ical = require('node-ical');
 const fs = require('fs');
 const extension = ".ics";
 
@@ -17,60 +16,63 @@ module.exports = {
     name: 'set',
     description: `Permet d'enregistrer l'emploi du temps au format .ics`,
     args: false,
-    usage: 'Après le !set vous avez 15sec pour transferer le fichier au format .ics',
+    usage: ' => Après le \'!set\' vous avez 10 secondes pour transferer le fichier au format .ics (glisser - déposer).',
     cooldown: 5,
-    async execute (message, args) {
+    execute (message, args) {
+        const { connexion } = message.client;
         let guildId = message.guild.id;
-        var next = false;
-        var data = null;
+        let channel = message.channel;
+        // Get the last 10 messages in ordre to find the first attachment
+        channel.fetchMessages({ limit: 10 })
+        .then(messages => {
+            let attachmentFound = false;
+            for (let [key, msg] of messages) {
+                if(!msg.author.bot) {
+                    let attachment = msg.attachments.first();
+                    if (attachmentFound === true) return;
+                    if (attachment !== undefined) {
+                        let url = attachment.url;
+                        let fileExtension = "." + attachment.filename.split(".")[1];
+                        if (!url.startsWith('https')) {
+                            let res = `Aucun fichier envoyé.`;
+                            message.channel.send(res);
+                            return;
+                        }
 
-        // Attendre qu'un fichier soit envoyé
-    	await message.channel.send("En attente du fichier .ics");
-    	const collection_msg = await message.channel.awaitMessages( msg => {
-    		return msg.attachments;
-    	}, {time: 15000}); // Timer d'attente en millisecondes
-    	let url = collection_msg.map( msg => msg.attachments.first().url).join(', ');
-        let fileName = collection_msg.map( msg => msg.attachments.first().filename).join(', ');
-		let fileExtension = "." + fileName.split(".")[1];
-		
-        if (!url.startsWith('https')) {
-            let res = `Aucun fichier envoyé.`;
-            message.channel.send(res);
-            return getPromise(next, res).then( value => {
-                console.log(value);
-            }).catch(console.error);
-        }
+                        if (fileExtension != extension) {
+                            let res = `L'extension n'est pas du ${extension}.`;
+                            message.channel.send(res);
+                            return;
+                        }
 
-        if (fileExtension != extension) {
-            let res = `L'extension n'est pas du ${extension}.`;
-            message.channel.send(res);
-            return getPromise(next, res).then( value => {
-                console.log(value);
-            }).catch(console.error);
-        }
+                        attachmentFound = true;
 
-        ical.fromURL(url, {}, function(err, content) {
-            if (err) throw err;
-            data = content;
-            next = true;
-        });
-        // async => sync
-        while (!next) {
-            require('deasync').sleep(100);
-        }
-
-        // Datas récupérer sauvegarder dans le .json
-        let jsonFile = require('./../ics.json');
-        jsonFile[guildId] = {
-            content: data
-        };
-        fs.writeFile('./ics.json', JSON.stringify(jsonFile, null, 4), err => {
-            if(err) throw err;
-            message.channel.send("Fichier sauvegardé !");
-        });
-
-        return getPromise(next, "All is fine").then( value => {
-            console.log(value);
-        }).catch(console.error);
+                        let count = "SELECT COUNT(*) AS nb FROM event WHERE guildId = ?";
+                        connexion.query(count, guildId, function (err, result) {
+                            if (err) throw err;
+                            if (result[0].nb == 0) {
+                                let sql = "INSERT INTO event (guildId, content) VALUES ?";
+                                let values = [
+                                    [guildId, url]
+                                ];
+                                connexion.query(sql,[values], function (err, result) {
+                                    if (err) throw err;
+                                    console.log("event enregistrer");
+                                });
+                            } else {
+                                let sql = "UPDATE event SET content = ? WHERE guildId = ?";
+                                let data = [url,guildId];
+                                connexion.query(sql, data, function (err, result) {
+                                    if (err) throw err;
+                                    console.log("event modifier");
+                                });
+                            }
+                        });
+                        return;
+                    }
+                }
+            }
+        })
+        .catch(console.error);
     }
 };
