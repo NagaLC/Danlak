@@ -13,7 +13,7 @@ module.exports = {
     execute (message, args) {
         const { connexion } = message.client;
         let guildId = message.guild.id;
-        console.log(url);
+        console.log(guildId);
         let sql = "SELECT content AS url FROM event WHERE guildId = ?";
         connexion.query(sql, guildId, function (err, result) {
             if (err) throw err;
