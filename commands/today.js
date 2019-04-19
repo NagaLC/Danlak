@@ -13,6 +13,7 @@ module.exports = {
     execute (message, args) {
         const { connexion } = message.client;
         let guildId = message.guild.id;
+        console.log(url);
         let sql = "SELECT content AS url FROM event WHERE guildId = ?";
         connexion.query(sql, guildId, function (err, result) {
             if (err) throw err;
@@ -20,7 +21,9 @@ module.exports = {
                 message.channel.send("Je ne trouve pas de données sur votre serveur\nPensez à `!set` votre fichier.ics.");
                 return false;
             }
+            console.log(result);
             let url = result[0].url;
+            console.log(url);
             ical.fromURL(url, {}, function(err, content) {
                 if (err) throw err;
                 control.chargerData(content);
