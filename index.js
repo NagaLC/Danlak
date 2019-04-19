@@ -7,10 +7,10 @@ const db_mysql = require('mysql');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.connexion = db_mysql.createConnection({
-	host: db_host,
-	user: db_user,
-	password: db_password,
-	database: db_database
+	host: process.env.HOST,
+	user: process.env.USER,
+	password: process.env.PASSWORD,
+	database: process.env.DATABASE
 }); 
 
 client.connexion.connect(function(err) {
