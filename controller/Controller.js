@@ -24,21 +24,22 @@ module.exports = class ControllerCours {
 			let evenement = new Cours();
 			let event = data[n];
 
-			// Créer le cours avec les informations
-			evenement.nom = event.summary;
-			evenement.salle = event.location;
-			let description = event.description.split(/\n/);
-			filtrerDescription(description, '');
-			for (let i = 0; i < description.length; i++) {
-				evenement.description += description[i] + "\n";
+			if(event.summary !== undefined) evenement.nom = event.summary;
+			if(event.location !== undefined) evenement.salle = event.location;
+			if(event.description !== undefined) {
+				let description = event.description.split(/\n/);
+				filtrerDescription(description, '');
+				for (let i = 0; i < description.length; i++) {
+					evenement.description += description[i] + "\n";
+				}
 			}
-			// Créer la période			
-			evenement.dDebut = new Date(event.start);
-			evenement.dFin = new Date(event.end);
-
+			if(event.start !== undefined) evenement.dDebut = new Date(event.start);
+			if(event.end !== undefined) evenement.dFin = new Date(event.end);
+			
 			this.ensembleCours.push(evenement);
 		}
 		this.ensembleCours = this.trierParDateHeure(this.ensembleCours);
+		console.log(this.ensembleCours);
 	}
 
 	afficher() {

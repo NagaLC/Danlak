@@ -57,14 +57,14 @@ module.exports = {
                                 ];
                                 connexion.query(sql,[values], function (err, result) {
                                     if (err) throw err;
-                                    message.channel.send("J'ai bien enregistré votre fichier"+attachment.filename);
+                                    message.channel.send("J'ai bien enregistré votre fichier : "+attachment.filename);
                                 });
                             } else {
                                 let sql = "UPDATE event SET content = ? WHERE guildId = ?";
                                 let data = [url,guildId];
                                 connexion.query(sql, data, function (err, result) {
                                     if (err) throw err;
-                                    message.channel.send("J'ai bien enregistré votre fichier"+attachment.filename);
+                                    message.channel.send("J'ai bien enregistré votre fichier : "+attachment.filename);
                                 });
                             }
                         });
