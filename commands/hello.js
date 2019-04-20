@@ -1,4 +1,4 @@
-const didi = require('./../lib/LibDiscord');
+const utility = require('./../lib/LibDiscord');
 
 module.exports = {
     name: 'hello',
@@ -6,6 +6,6 @@ module.exports = {
     args: false,
     aliases: ['hi'],
     execute (message, args) {
-        message.reply(didi.hello());
+        message.reply(utility.hello());
     }
 };

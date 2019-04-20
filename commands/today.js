@@ -1,8 +1,5 @@
+const utility = require('./../lib/LibDiscord');
 const Controller = require('./../controller/Controller');
-const ical = require('node-ical');
-const libDate = require('./../lib/LibDate');
-const didi = require('./../lib/LibDiscord');
-const control = new Controller();
 
 module.exports = {
     name: 'today',
@@ -11,33 +8,16 @@ module.exports = {
     aliases: ['td', 'ls'],
     cooldown: 5,
     execute (message, args) {
-        const { connexion } = message.client;
         let guildId = message.guild.id;
-        let sql = "SELECT content AS url FROM event WHERE guildId = ?";
-        connexion.query(sql, guildId, function (err, result) {
-            if (err) throw err;
-            if (result[0] === undefined) {
-                message.channel.send("Je ne trouve pas de données sur votre serveur\nPensez à `!set` votre fichier.ics.");
-                return false;
+        let control = new Controller();
+        control.getEvent(guildId, "today", (err, result) => {
+            if (err) {
+                message.channel.send(result);
+                return;
             }
-            let url = result[0].url;
-            ical.fromURL(url, {}, function(err, content) {
-                // if (err) throw err;
-                control.chargerData(content);
-                let today = libDate.today();
-                let result = control.listeCoursParDate(today);
-                let bFound = false;
-                result.forEach( (cours, key) => {
-                    let tempEmbed = didi.getEmbed(cours);
-                    message.channel.send(tempEmbed);
-                    bFound = true;
-                });
-                if (!bFound) {
-                    message.channel.send("Pas de cours pour la date donnée : "+ today);          
-                }
-                return true;
-            });
+            for(let index in result) {
+                message.channel.send(utility.getEmbed(result[index]));
+            }
         });
-        return false;
     }
 };

@@ -1,34 +1,25 @@
 const prefix = "!";
 const fs = require('fs');
 const Discord = require('discord.js');
-const Controller = require('./controller/Controller');
-const db_mysql = require('mysql');
+const con = require('./dao/connection');
 
+// Init. 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-client.connexion = db_mysql.createConnection({
-	host: process.env.HOST,
-	user: process.env.USER,
-	password: process.env.PASSWORD,
-	database: process.env.DATABASE
-}); 
+client.connection = con; // database
+client.connection.connect(); // connected to the db
 
-client.connexion.connect(function(err) {
-  if (err) throw err;
-  console.log("Mysql connected : [OK]");
-});
-
+// Load differents commands from the commands directory
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
-
+// Collection to manage cooldowns of commands
 const cooldowns = new Discord.Collection();
 
 client.on('ready', () => {
-	console.log('Bot connected : [OK]');
-	client.user.setActivity('nudes', { type: 'WATCHING' });
+	client.user.setActivity('Nudes', { type: 'WATCHING' });
 });
 
 client.on('message', (message) => {
